@@ -4,8 +4,8 @@ import {
   onMounted,
 } from "https://unpkg.com/vue@3/dist/vue.esm-browser.js";
 import modal from "./modal.js";
-let productModal = null;
-let delProductModal = null;
+let productModal2 = null;
+let delProductModal2 = null;
 createApp({
   // 會改動的值放ref內
   //要點擊才觸發的函式需寫入return
@@ -19,7 +19,12 @@ createApp({
     const tempProduct = ref({
       imagesUrl: [],
     });
-
+    const getInModal = (productModal) => {
+      productModal2 = productModal;
+    };
+    const getInDelModal = (delProductModal) => {
+      delProductModal2 = delProductModal;
+    };
     const checkLogin = () => {
       axios
         .post(`${apiUrl}/api/user/check`)
@@ -45,30 +50,17 @@ createApp({
           imagesUrl: [],
         };
         status.value = "new";
-        productModal.show();
+        productModal2.show();
       } else if (arg === "edit") {
         tempProduct.value = { ...product };
         status.value = "edit";
-        productModal.show();
+        productModal2.show();
       } else if (arg === "delete") {
         tempProduct.value = { ...product };
-        delProductModal.show();
+        delProductModal2.show();
       }
     };
     onMounted(() => {
-      productModal = new bootstrap.Modal(
-        document.getElementById("productModal"),
-        {
-          keyboard: false,
-        }
-      );
-
-      delProductModal = new bootstrap.Modal(
-        document.getElementById("delProductModal"),
-        {
-          keyboard: false,
-        }
-      );
       // Retrieve Token
       const token = document.cookie.replace(
         /(?:(?:^|.*;\s*)WillyToken\s*=\s*([^;]*).*$)|^.*$/,
@@ -84,6 +76,8 @@ createApp({
       openModal,
       status,
       getData,
+      getInModal,
+      getInDelModal,
     };
   },
   components: {

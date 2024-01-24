@@ -1,4 +1,6 @@
 import { onMounted } from "https://unpkg.com/vue@3/dist/vue.esm-browser.js";
+let productModal = null;
+let delProductModal = null;
 export default {
   setup(props, { emit }) {
     const apiAdmin = `https://ec-course-api.hexschool.io/v2/api/aca101139/admin`;
@@ -41,9 +43,14 @@ export default {
       axios
         .delete(`${apiAdmin}/product/${props.tempProduct.id}`)
         .then((res) => {
+          console.log(11);
           alert(res.data.message);
+          console.log(12);
           delProductModal.hide();
+          console.log(13);
+          alert(13);
           emit("getDataMethod");
+          console.log(14);
         })
         .catch((err) => alert(err.response.data.message));
     };
@@ -58,12 +65,14 @@ export default {
           keyboard: false,
         }
       );
+      emit("getInModal", productModal);
       delProductModal = new bootstrap.Modal(
         document.getElementById("delProductModal"),
         {
           keyboard: false,
         }
       );
+      emit("getInDelModal", delProductModal);
     });
     return { confirm, confirmDelete, createImages };
   },
